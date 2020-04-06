@@ -179,7 +179,7 @@ extension RandomNumberGenerator {
         }
       }
       
-      // If we missed all the two-lane roads, generate more bits and try again
+      // If we missed, generate more bits and try again
       random = next()
       if random < upperBound { return random }
       bits = T.max &- random
