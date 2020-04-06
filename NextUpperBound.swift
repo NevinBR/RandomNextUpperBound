@@ -68,8 +68,8 @@ extension RandomNumberGenerator {
     
     // Everything above this line is essentially equivalent to the existing
     // Swift standard library version, just rearranged a bit. (We do avoid
-    // calling multipliedFullWidth when upperBound is in the top third of T,
-    // but in practice that doesn't really gain much.)
+    // calling multipliedFullWidth and calculating a remainder when upperBound
+    // is in the top third of T, but in practice that doesn't gain much.)
     //
     // The rest of this function is an optimization to reduce the expected
     // number of calls to next() when upperBound is between 1/2 and 2/3 of T.
