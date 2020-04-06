@@ -23,6 +23,10 @@
 // Nonetheless it can be and is done here, resulting in a reduction of the
 // expected number of calls to next() in the worst-case from 2 to 1.6, when
 // upperBound is just over half the maximum possible.
+//
+// For reference, the Swift standard library implementation of next(upperBound:)
+// at the time of this writing can be found at:
+// https://github.com/apple/swift/blob/bd160ac85ff53dacd4d4ef196904baa4cd3cfb13/stdlib/public/core/Random.swift#L80
 
 extension RandomNumberGenerator {
   @inlinable
