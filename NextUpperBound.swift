@@ -1,4 +1,4 @@
-//  Author: Nevin Brackett-Rozinsky
+// Author: Nevin Brackett-Rozinsky
 //
 // This is a proof-of-concept implementation to generate random integer values
 // less than an upper bound. It showcases a potential optimization for the
