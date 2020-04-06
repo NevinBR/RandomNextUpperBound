@@ -87,6 +87,10 @@ extension RandomNumberGenerator {
     
     // Between 1/2 and 2/3 of T
     
+    // We will need to check parity a few times.
+    @inline(__always)
+    func isEven(_ n: T) -> Bool { n._lowWord & 1 == 0 }
+    
     // This is not actually a type conversion, but the compiler doesn’t know
     // that T == T.Magnitude for UnsignedInteger types.
     var bits = T(truncatingIfNeeded: m.low)
@@ -97,7 +101,7 @@ extension RandomNumberGenerator {
     // high bits of the original random number. This is valid because two
     // numbers a and b, when multiplied by upperBound, will have the same .low
     // value if and only if they differ solely in those high bits.
-    if upperBound.isEven {
+    if isEven(upperBound) {
       bits |= random &>> (T.bitWidth &- upperBound.trailingZeroBitCount)
     }
     
@@ -105,11 +109,6 @@ extension RandomNumberGenerator {
     // note that diff/2 < halfBound <= diff, which we know because upperBound
     // is between 1/2 and 2/3 of T.
     let halfBound = (upperBound &+ 1) &>> 1
-    
-    // We must ensure that the appended bit is unbiased. If there are an odd
-    // number of possibilities, we will discard one.
-    @inline(__always)
-    func isEven(_ n: T) -> Bool { n._lowWord & 1 == 0 }
     
     // The interesting part
     repeat {
