@@ -238,5 +238,8 @@ extension RandomNumberGenerator {
     // simplification produce the expression given previously for f(n):
     //
     // E(A) = (4n + 1)/6 + 1/(8n - 6)
+    //
+    // When u is outside (1/2, 2/3), this function calls next() an average of
+    // n / floor(n) times, just like the standard library version.
   }
 }
