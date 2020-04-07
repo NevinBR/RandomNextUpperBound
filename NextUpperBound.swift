@@ -194,8 +194,8 @@ extension RandomNumberGenerator {
     // be modeled as a Markov chain with four states:
     //
     // A) Initial state
-    // B) 1 random number less than diff
-    // C) 2 random numbers less than diff
+    // B) `bits` available
+    // C) `newBits` also available
     // D) Success
     //
     // Let u = upperBound / 2^T.bitWidth, and x = 1 - u. Note that
