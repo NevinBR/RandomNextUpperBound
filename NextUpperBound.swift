@@ -186,5 +186,57 @@ extension RandomNumberGenerator {
       if random < upperBound { return random }
       bits = T.max &- random
     } while true
+    
+    
+    // Epilogue: Deriving the expected number of next() calls
+    //
+    // When upperBound is between 1/2 and 2/3 of T, this implementation can
+    // be modeled as a Markov chain with four states:
+    //
+    // A) Initial state
+    // B) 1 random number less than diff
+    // C) 2 random numbers less than diff
+    // D) Success
+    //
+    // Let u = upperBound / 2^T.bitWidth, and x = 1 - u. Note that
+    // x = diff / 2^T.bitWidth, and u/2 ≈ halfBound / 2^T.bitWidth.
+    //
+    // Now, writing p(i, j) for the probability of transitioning from state i
+    // to state j, we have:
+    //
+    // p(A, B) = x            (random was outside the acceptable range)
+    // p(A, D) = 1 - x
+    // p(B, C) = x            (random was outside the acceptable range)
+    // p(B, D) = 1 - x
+    // p(C, A) = ((3x-1) / 2x)^2      (did not land on a road)
+    // p(C, D) = 1 - p(C, A)
+    //
+    // To find p(C, A), observe that it equals the probability of not landing
+    // on a road, so p(C, A) ≈ ((diff - halfBound)/diff)^2 ≈ ((x - u/2)/x)^2.
+    //
+    // Note that leaving state C does not involve a next() call, only checking
+    // whether we landed on a road. Leaving state A or B does call next().
+    //
+    // Now, writing E(S) for the expected number of next() calls from state S,
+    // we can form a system of equations:
+    //
+    // E(A) = 1 + p(A, B) * E(B)
+    // E(B) = 1 + p(B, C) * E(C)
+    // E(C) = 0 + p(C, A) * E(A)
+    //
+    // Direct substitution yields an expression involving only E(A):
+    //
+    // E(A) = 1 + p(A, B) * (1 + p(B, C) * p(C, A) * E(A))
+    //
+    // Solving for E(A) gives:
+    //
+    // E(A) = (1 + p(A, B)) / (1 - p(A, B) * p(B, C) * p(C, A))
+    //      = (1 + x) / (1 - (3x - 1)^2 / 4)
+    //      = (4 / 3x) * (1 + x) / (4 - 3x)
+    //
+    // Recalling that n = 1/u = 1/(1-x), we see x = 1 - 1/n. Substitution and
+    // simplification produce the expression given previously for f(n):
+    //
+    // E(A) = (4n + 1)/6 + 1/(8n - 6)
   }
 }
