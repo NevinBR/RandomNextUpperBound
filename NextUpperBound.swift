@@ -81,9 +81,7 @@ extension RandomNumberGenerator {
     // averages 1.5 calls. Nothing outside that range averages more than 1.5.
     //
     // In the same range, this implementation is expected to call next() about
-    // f(n) times, where f(n) is a quotient of 4th-degree polynomials:
-    //
-    // f(n) = (2 - 1/n) / (1 - ((1 - 1/n)(2 - 3/n))^2)
+    // f(n) = (4n + 1)/6 + 1/(8n - 6) times.
     //
     // Thus for upperBound just above 1/2 of T it averages 1.6 calls (20% less),
     // and for upperBound just below 2/3 of T it averages 4/3 calls (11% less).
